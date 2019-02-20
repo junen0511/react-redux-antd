@@ -21,16 +21,16 @@ const defaultOpt = {
     start: {
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
-        devtool: 'eval'
+        devtool: 'eval',
+        notifyOnErrors: true
     },
     prod: {
         index: resolve('dist/index.html'),
         assetsRoot: resolve('dist'),
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
-        productionSourceMap: false,
-        productionGzip: false,
-        productionGzipExtensions: ['js', 'css']
+        devtool: '#source-map',
+        productionSourceMap: false
     }
 };
 

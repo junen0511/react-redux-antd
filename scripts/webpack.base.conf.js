@@ -1,5 +1,6 @@
 'use strict';
 
+const WebpackBar = require('webpackbar');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const config = require('../config');
 const utils = require('./utils');
@@ -22,6 +23,7 @@ module.exports = {
             utils: utils.resolve('src/utils')
         }
     },
+    plugins: [new WebpackBar()],
     module: {
         rules: [
             {
@@ -48,7 +50,10 @@ module.exports = {
                         }
                     },
                     {
-                        loader: 'less-loader'
+                        loader: 'less-loader',
+                        options: {
+                            javascriptEnabled: true
+                        }
                     }
                 ]
             },

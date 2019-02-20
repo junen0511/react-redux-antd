@@ -5,13 +5,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const baseWebpackConfig = require('./webpack.base.conf');
 const utils = require('./utils');
 const config = require('../config');
 
 const webpackConfig = merge(baseWebpackConfig, {
     mode: 'production',
-    bail: true,
     devtool: config.prod.productionSourceMap ? config.prod.devtool : false,
     output: {
         path: config.prod.assetsRoot,
@@ -59,7 +59,9 @@ const webpackConfig = merge(baseWebpackConfig, {
         // keep module.id stable when vendor modules does not change
         new webpack.HashedModuleIdsPlugin(),
         // enable scope hoisting
-        new webpack.optimize.ModuleConcatenationPlugin()
+        new webpack.optimize.ModuleConcatenationPlugin(),
+        //  represents bundle content as convenient interactive zoomable treemap
+        new BundleAnalyzerPlugin()
     ],
     optimization: {
         splitChunks: {
