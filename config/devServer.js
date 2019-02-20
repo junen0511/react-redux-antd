@@ -9,7 +9,7 @@ module.exports = assetsPublicPath => ({
     hot: true,
     contentBase: assetsPublicPath, // since we use CopyWebpackPlugin.
     compress: true,
-    host: HOST || 'localhost',
+    host: HOST || '0.0.0.0',
     port: PORT || 3000,
     open: true,
     historyApiFallback: {

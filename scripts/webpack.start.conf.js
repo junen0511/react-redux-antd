@@ -1,13 +1,17 @@
 'use strict';
 
+const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+const colors = require('colors');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const portfinder = require('portfinder');
+const address = require('address');
 const baseWebpackConfig = require('./webpack.base.conf');
 const config = require('../config');
 const utils = require('./utils');
+const packageConfig = require('../package.json');
 
 const startWebpackConfig = merge(baseWebpackConfig, {
     mode: 'development',
@@ -44,7 +48,9 @@ module.exports = new Promise((resolve, reject) => {
                 new FriendlyErrorsPlugin({
                     compilationSuccessInfo: {
                         messages: [
-                            `Your application is running here: http://${startWebpackConfig.devServer.host}:${port}`
+                            `You can now view ${colors.bold(packageConfig.name)} in the browser.`,
+                            `${colors.bold('Local:')}            http://${address.ip('lo')}:${colors.bold(port)}`,
+                            `${colors.bold('On Your Network:')}  http://${address.ip()}:${colors.bold(port)}/`
                         ]
                     },
                     onErrors: config.start.notifyOnErrors ? utils.createNotifierCallback() : undefined
