@@ -35,6 +35,22 @@ export default [
     {
         name: 'detail',
         path: '/detail',
+        // authority: ['junen'], // test authority
         component: dynamicWrapper(() => import('./pages/Detail'))
+    },
+    {
+        name: 'exception',
+        path: '/exception/403',
+        component: dynamicWrapper(() => import('./pages/Exception/403'))
+    },
+    {
+        name: 'exception',
+        path: '/exception/404',
+        component: dynamicWrapper(() => import('./pages/Exception/404'))
+    },
+    {
+        name: 'exception',
+        path: '/exception/500',
+        component: dynamicWrapper(() => import('./pages/Exception/500'))
     }
 ];
