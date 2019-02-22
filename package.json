@@ -29,7 +29,7 @@
   "scripts": {
     "start": "webpack-dev-server --config scripts/webpack.start.conf.js",
     "prod": "cross-env ENV_CONFIG=prod node scripts/build.js",
-    "test_tb": "cross-env ENV_CONFIG=test_tb node scripts/build.js"
+    "test": "cross-env ENV_CONFIG=test node scripts/build.js"
   },
   "browserslist": [
     ">0.2%",
