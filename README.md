@@ -177,7 +177,7 @@ Your app is ready to be deployed!
 - 设置开发环境的环境变量
 - 启用热替换 HotModuleReplacementPlugin & NamedModulesPlugin
 - 编译出错时跳过输出阶段 NoEmitOnErrorsPlugin
-- 引用生成后静态资源 HtmlWebpackPlugin
+- 引用生成后的静态资源 HtmlWebpackPlugin
 - webpack编译友好报错 friendly-errors-webpack-plugin
 
 
@@ -252,6 +252,7 @@ Your app is ready to be deployed!
 - 提取并优化压缩css文件 MiniCssExtractPlugin & OptimizeCSSPlugin
 - 分割并压缩JavaScript代码 optimization:splitChunks & optimization:minimizer
 - 引用生成后静态资源 HtmlWebpackPlugin
+
 		'use strict';
 		const webpack = require('webpack');
 		const merge = require('webpack-merge');
