@@ -7,7 +7,7 @@ const utils = require('./utils');
 const prodMode = process.env.NODE_ENV === 'production';
 
 module.exports = {
-    entry: ['babel-polyfill', config.main],
+    entry: [config.main], //Join 'babel-polyfill' for lower version browser
     output: {
         path: config.prod.assetsRoot,
         filename: '[name].js',
@@ -20,6 +20,7 @@ module.exports = {
             assets: utils.resolve('src/assets'),
             components: utils.resolve('src/components'),
             styles: utils.resolve('src/styles'),
+            api: utils.resolve('src/api'),
             utils: utils.resolve('src/utils')
         }
     },
@@ -54,6 +55,16 @@ module.exports = {
                         options: {
                             javascriptEnabled: true
                         }
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: () => [
+                                require('autoprefixer')({
+                                    browsers: ['> 1%', 'last 2 versions']
+                                })
+                            ]
+                        }
                     }
                 ]
             },
@@ -75,6 +86,15 @@ module.exports = {
                             javascriptEnabled: true,
                             sourceMap: true
                         }
+                    }
+                ]
+            },
+            {
+                test: /\.(png|jpg|gif)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {}
                     }
                 ]
             }

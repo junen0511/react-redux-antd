@@ -6,14 +6,19 @@ module.exports = {
         ENV_HOST: '"dev"',
         BASE_API: '"/papi"'
     },
-    test: {
+    test_ta: {
         NODE_ENV: '"production"',
-        ENV_HOST: '"tb"',
-        BASE_API: '"http://test.api.annajunen.top"'
+        ENV_HOST: '"ta"',
+        BASE_API: '"http://apidev.molbase.cn"'
+    },
+    test_taa: {
+        NODE_ENV: '"production"',
+        ENV_HOST: '"ta"',
+        BASE_API: '"http://tc.api.saas.molbase.org"'
     },
     prod: {
         NODE_ENV: '"production"',
         ENV_HOST: '""',
-        BASE_API: '"http://api.annajunen.top"'
+        BASE_API: '"http://api.saas.molbase.org"'
     }
 };

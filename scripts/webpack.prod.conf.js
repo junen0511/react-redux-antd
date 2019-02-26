@@ -59,30 +59,37 @@ const webpackConfig = merge(baseWebpackConfig, {
         // keep module.id stable when vendor modules does not change
         new webpack.HashedModuleIdsPlugin(),
         // enable scope hoisting
-        new webpack.optimize.ModuleConcatenationPlugin(),
+        new webpack.optimize.ModuleConcatenationPlugin()
         //  represents bundle content as convenient interactive zoomable treemap
-        new BundleAnalyzerPlugin()
+        // new BundleAnalyzerPlugin()
     ],
     optimization: {
         splitChunks: {
+            chunks: 'all',
+            minSize: 30000,
+            maxSize: 0,
+            minChunks: 1,
+            maxAsyncRequests: 5,
+            maxInitialRequests: 3,
+            name: true,
             cacheGroups: {
                 vendors: {
                     chunks: 'all',
                     name: 'vendors',
-                    priority: 100,
-                    test: /(react|react-dom|react-dom-router|babel-polyfill|redux)/
+                    priority: 0,
+                    test: /(react|react-dom|react-dom-router|moment|redux|lodash)/
                 },
                 'async-commons': {
                     chunks: 'async',
                     name: 'async-commons',
                     minChunks: 2,
-                    priority: 90
+                    priority: -10
                 },
                 commons: {
                     chunks: 'all',
                     name: 'commons',
                     minChunks: 2,
-                    priority: 80
+                    priority: -20
                 }
             }
         },
@@ -90,11 +97,12 @@ const webpackConfig = merge(baseWebpackConfig, {
             new UglifyJsPlugin({
                 uglifyOptions: {
                     compress: {
-                        warnings: false
+                        warnings: false,
+                        drop_console: true
                     }
                 },
-                sourceMap: config.prod.productionSourceMap,
-                parallel: true
+                parallel: true,
+                sourceMap: config.prod.productionSourceMap
             })
         ]
     }

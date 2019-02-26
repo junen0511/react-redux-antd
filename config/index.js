@@ -36,4 +36,4 @@ const defaultOpt = {
 
 const devServer = getDevServer(defaultOpt.start.assetsPublicPath);
 
-module.exports = { devServer, env, theme, ...defaultOpt };
+module.exports = Object.assign({ devServer, env, theme }, defaultOpt);

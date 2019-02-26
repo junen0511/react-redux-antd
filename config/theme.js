@@ -11,5 +11,6 @@ module.exports = {
     'text-color': '#1E2330', //主文本色
     'text-color-secondary': '#6F7B96', // 次文本色
     'border-color-base': '#DADEE7', // 边框色
+    'font-family': 'Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif',
     'box-shadow-base': '0 1px 15px rgba(30, 36, 49, .15)' // 浮层阴影
 };
