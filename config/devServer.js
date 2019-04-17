@@ -19,7 +19,7 @@ module.exports = assetsPublicPath => ({
     publicPath: '/',
     proxy: {
         '/papi': {
-            target: 'http://tc.api.saas.molbase.org',
+            target: 'http://api.annajunen.top',
             changeOrigin: true,
             pathRewrite: {
                 "^/papi": ""

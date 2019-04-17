@@ -51,12 +51,6 @@ module.exports = {
                         }
                     },
                     {
-                        loader: 'less-loader',
-                        options: {
-                            javascriptEnabled: true
-                        }
-                    },
-                    {
                         loader: 'postcss-loader',
                         options: {
                             plugins: () => [
@@ -64,6 +58,12 @@ module.exports = {
                                     browsers: ['> 1%', 'last 2 versions']
                                 })
                             ]
+                        }
+                    },
+                    {
+                        loader: 'less-loader',
+                        options: {
+                            javascriptEnabled: true
                         }
                     }
                 ]

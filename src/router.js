@@ -7,7 +7,7 @@ const dynamicWrapper = component => {
     return Loadable({
         loader: () => {
             return component().then(raw => {
-                const Component = raw.default || raw;
+                const Component = raw.view || raw.default;
                 return props =>
                     createElement(Component, {
                         ...props
