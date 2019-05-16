@@ -3,7 +3,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const colors = require('colors');
+const chalk = require('chalk');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const portfinder = require('portfinder');
@@ -48,9 +48,9 @@ module.exports = new Promise((resolve, reject) => {
                 new FriendlyErrorsPlugin({
                     compilationSuccessInfo: {
                         messages: [
-                            `You can now view ${colors.bold(packageConfig.name)} in the browser.`,
-                            `${colors.bold('Local:')}            http://${address.ip('lo')}:${colors.bold(port)}`,
-                            `${colors.bold('On Your Network:')}  http://${address.ip()}:${colors.bold(port)}/`
+                            `You can now view ${chalk.bold(packageConfig.name)} in the browser.`,
+                            `${chalk.bold('Local:')}            http://${address.ip('lo')}:${chalk.bold(port)}`,
+                            `${chalk.bold('On Your Network:')}  http://${address.ip()}:${chalk.bold(port)}/`
                         ]
                     },
                     onErrors: config.start.notifyOnErrors ? utils.createNotifierCallback() : undefined

@@ -7,7 +7,7 @@ const utils = require('./utils');
 const prodMode = process.env.NODE_ENV === 'production';
 
 module.exports = {
-    entry: [config.main], //Join 'babel-polyfill' for lower version browser
+    entry: [config.main],
     output: {
         path: config.prod.assetsRoot,
         filename: '[name].js',
@@ -19,9 +19,10 @@ module.exports = {
             '@src': utils.resolve('src'),
             assets: utils.resolve('src/assets'),
             components: utils.resolve('src/components'),
+            layouts: utils.resolve('src/layouts'),
             styles: utils.resolve('src/styles'),
-            api: utils.resolve('src/api'),
-            utils: utils.resolve('src/utils')
+            utils: utils.resolve('src/utils'),
+            '@ant-design/icons/lib/dist$': utils.resolve('src/utils/antdIcon.js')
         }
     },
     plugins: [new WebpackBar()],
@@ -90,7 +91,7 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(png|jpg|gif)$/,
+                test: /\.(png|jpg|gif|svg)$/,
                 use: [
                     {
                         loader: 'file-loader',

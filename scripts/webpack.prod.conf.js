@@ -4,7 +4,7 @@ const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const baseWebpackConfig = require('./webpack.base.conf');
 const utils = require('./utils');
@@ -59,43 +59,50 @@ const webpackConfig = merge(baseWebpackConfig, {
         // keep module.id stable when vendor modules does not change
         new webpack.HashedModuleIdsPlugin(),
         // enable scope hoisting
-        new webpack.optimize.ModuleConcatenationPlugin()
+        new webpack.optimize.ModuleConcatenationPlugin(),
         //  represents bundle content as convenient interactive zoomable treemap
         // new BundleAnalyzerPlugin()
     ],
     optimization: {
+        runtimeChunk: true,
         splitChunks: {
             chunks: 'all',
             minSize: 30000,
-            maxSize: 0,
             minChunks: 1,
             maxAsyncRequests: 5,
-            maxInitialRequests: 3,
+            maxInitialRequests: 5,
+            automaticNameDelimiter: '~',
             name: true,
             cacheGroups: {
+                'vendors-core': {
+                    test: /(react|react-dom|react-router-dom|redux|react-redux|react-router-redux|redux-thunk|history|prop-types|axios)/,
+                    chunks: 'initial',
+                    name: 'vendors-core',
+                    priority: 40
+                },
                 vendors: {
+                    test: /[\\/]node_modules[\\/]/,
                     chunks: 'all',
                     name: 'vendors',
-                    priority: 0,
-                    test: /(react|react-dom|react-dom-router|moment|redux|lodash)/
+                    priority: 0
                 },
                 'async-commons': {
                     chunks: 'async',
-                    name: 'async-commons',
                     minChunks: 2,
+                    name: 'async-commons',
                     priority: -10
                 },
                 commons: {
                     chunks: 'all',
-                    name: 'commons',
                     minChunks: 2,
+                    name: 'commons',
                     priority: -20
                 }
             }
         },
         minimizer: [
-            new UglifyJsPlugin({
-                uglifyOptions: {
+            new TerserPlugin({
+                terserOptions: {
                     compress: {
                         warnings: false,
                         drop_console: true
