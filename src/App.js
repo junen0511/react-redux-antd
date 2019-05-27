@@ -3,29 +3,20 @@ import { Provider } from 'react-redux';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 import Authorized from 'utils/Authorized';
-import NotFound from './pages/Exception/404';
+import NotFound from './pages/exception/404';
 import store, { history } from './store';
-import routerData from './router';
+import { getRouterData } from './common/router';
 
 const { AuthorizedRoute } = Authorized;
 class App extends Component {
     render() {
+        const routerData = getRouterData();
+        const Home = routerData['/home'].component;
         return (
             <Provider store={store}>
                 <ConnectedRouter history={history}>
                     <Switch>
-                        {routerData.map(({ path, component, exact, authority }) => (
-                            <AuthorizedRoute
-                                key={path}
-                                path={path}
-                                exact={exact}
-                                component={component}
-                                authority={authority}
-                                redirectPath="/exception/403"
-                            />
-                        ))}
-                        <Redirect exact from="/" to="/home" />
-                        <Route render={NotFound} />
+                        <Route path="/" component={Home} />
                     </Switch>
                 </ConnectedRouter>
             </Provider>
