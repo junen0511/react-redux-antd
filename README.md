@@ -30,7 +30,9 @@ Your app is ready to be deployed!
 		├── /scripts/        # 构建配置
 		├── /src/            # 业务逻辑代码
 		│ ├── /assets/       # 项目静态资源文件
+		│ ├── /common/       # 路由表及页面组件loader&菜单管理
 		│ ├── /components/   # UI组件及UI相关方法
+		│ │ ├── /Authorized/ # 权限组件&权限管理 
 		│ ├── /global/    	 # 独立状态管理
 		│ ├── /pages/        # 项目页面组件
 		│ ├── /styles/    	 # 全局样式及UI主题
@@ -38,13 +40,14 @@ Your app is ready to be deployed!
 		│ ├── App.js         # 项目入口组件
 		│ ├── index.js       # 项目入口文件,挂载组件,初始化 
 		│ ├── reducers.js    # 合并combine reducers
-		│ ├── router.js      # 路由表及页面组件loader
 		│ └── store.js       # compose middlewares & create store
 		├── .babelrc         # babel-loader配置
 		├── .eslintrc        # Eslint配置
 		├── .prettierrc      # Prettierrc格式化配置
 		└── package.json     # 项目信息 
 	
+
+[权限使用说明](https://v1.pro.ant.design/docs/authority-management-cn)
 ### webpack配置
 
 这里是通过babel-loader来运行编译react组件的（这里用的babel7）
@@ -74,111 +77,113 @@ Your app is ready to be deployed!
 - 加载自定义组件less文件时，忽略node_modules文件夹`exclude: config.nodeModules`，设置来源文件夹src`include: config.src`。不然会导致antd组件less被scoped处理，组件样式无法生效。如果less文件需要导入antd的公共样式，less-loader配置项设置`javascriptEnabled: true`。
 - 加载antd组件的less文件时，忽略src目录下的文件`exclude: config.src`。不然会导致自定义组件无法做scoped处理。
 - 定制antd主题时less-loader配置javascriptEnabled:true, .babelrc插件配置`["import", { "libraryName": "antd", "style": true }]`。
+- css兼容前缀自动补全 postcss-loader&autoprefixer（和less-loader有先后区分）
 - 编译进度条 webpackbar
 
-      'use strict';
-
-      const WebpackBar = require('webpackbar');
-      const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-      const config = require('../config');
-      const utils = require('./utils');
-      const prodMode = process.env.NODE_ENV === 'production';
-
-      module.exports = {
-          entry: [config.main], //Join 'babel-polyfill' for lower version browser
-          output: {
-              path: config.prod.assetsRoot,
-              filename: '[name].js',
-              publicPath: prodMode ? config.prod.assetsPublicPath : config.start.assetsPublicPath
-          },
-          resolve: {
-              extensions: ['.js', '.jsx', '.json'],
-              alias: {
-                  '@src': utils.resolve('src'),
-                  assets: utils.resolve('src/assets'),
-                  components: utils.resolve('src/components'),
-                  styles: utils.resolve('src/styles'),
-                  api: utils.resolve('src/api'),
-                  utils: utils.resolve('src/utils')
-              }
-          },
-          plugins: [new WebpackBar()],
-          module: {
-              rules: [
-                  {
-                      test: /\.(js|jsx)$/,
-                      exclude: config.nodeModules,
-                      loader: 'babel-loader',
-                      include: config.src
-                  },
-                  // Modular loader components styles
-                  {
-                      test: /\.(css|less)$/,
-                      exclude: config.nodeModules,
-                      include: config.src,
-                      use: [
-                          {
-                              loader: prodMode ? MiniCssExtractPlugin.loader : 'style-loader'
-                          },
-                          {
-                              loader: 'css-loader',
-                              options: {
-                                  sourceMap: true,
-                                  modules: true,
-                                  localIdentName: '[local]___[hash:base64:5]'
-                              }
-                          },
-                          {
-                              loader: 'postcss-loader',
-                              options: {
-                                  plugins: () => [
-                                      require('autoprefixer')({
-                                          browsers: ['> 1%', 'last 2 versions']
-                                      })
-                                  ]
-                              }
-                          },
-                          {
-                              loader: 'less-loader',
-                              options: {
-                                  javascriptEnabled: true
-                              }
-                          }
-                      ]
-                  },
-                  // Customize antd themes
-                  {
-                      test: /\.(css|less)$/,
-                      exclude: config.src,
-                      use: [
-                          {
-                              loader: prodMode ? MiniCssExtractPlugin.loader : 'style-loader'
-                          },
-                          {
-                              loader: 'css-loader'
-                          },
-                          {
-                              loader: 'less-loader',
-                              options: {
-                                  modifyVars: config.theme,
-                                  javascriptEnabled: true,
-                                  sourceMap: true
-                              }
-                          }
-                      ]
-                  },
-                  {
-                      test: /\.(png|jpg|gif)$/,
-                      use: [
-                          {
-                              loader: 'file-loader',
-                              options: {}
-                          }
-                      ]
-                  }
-              ]
-          }
-      };
+		'use strict';
+		
+		const WebpackBar = require('webpackbar');
+		const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+		const config = require('../config');
+		const utils = require('./utils');
+		const prodMode = process.env.NODE_ENV === 'production';
+		
+		module.exports = {
+		    entry: [config.main],
+		    output: {
+		        path: config.prod.assetsRoot,
+		        filename: '[name].js',
+		        publicPath: prodMode ? config.prod.assetsPublicPath : config.start.assetsPublicPath
+		    },
+		    resolve: {
+		        extensions: ['.js', '.jsx', '.json'],
+		        alias: {
+		            '@src': utils.resolve('src'),
+		            assets: utils.resolve('src/assets'),
+		            components: utils.resolve('src/components'),
+		            layouts: utils.resolve('src/layouts'),
+		            styles: utils.resolve('src/styles'),
+		            utils: utils.resolve('src/utils'),
+		            '@ant-design/icons/lib/dist$': utils.resolve('src/utils/antdIcon.js')
+		        }
+		    },
+		    plugins: [new WebpackBar()],
+		    module: {
+		        rules: [
+		            {
+		                test: /\.(js|jsx)$/,
+		                exclude: config.nodeModules,
+		                loader: 'babel-loader',
+		                include: config.src
+		            },
+		            // Modular loader components styles
+		            {
+		                test: /\.(css|less)$/,
+		                exclude: config.nodeModules,
+		                include: config.src,
+		                use: [
+		                    {
+		                        loader: prodMode ? MiniCssExtractPlugin.loader : 'style-loader'
+		                    },
+		                    {
+		                        loader: 'css-loader',
+		                        options: {
+		                            sourceMap: true,
+		                            modules: true,
+		                            localIdentName: '[local]___[hash:base64:5]'
+		                        }
+		                    },
+		                    {
+		                        loader: 'postcss-loader',
+		                        options: {
+		                            plugins: () => [
+		                                require('autoprefixer')({
+		                                    browsers: ['> 1%', 'last 2 versions']
+		                                })
+		                            ]
+		                        }
+		                    },
+		                    {
+		                        loader: 'less-loader',
+		                        options: {
+		                            javascriptEnabled: true
+		                        }
+		                    }
+		                ]
+		            },
+		            // Customize antd themes
+		            {
+		                test: /\.(css|less)$/,
+		                exclude: config.src,
+		                use: [
+		                    {
+		                        loader: prodMode ? MiniCssExtractPlugin.loader : 'style-loader'
+		                    },
+		                    {
+		                        loader: 'css-loader'
+		                    },
+		                    {
+		                        loader: 'less-loader',
+		                        options: {
+		                            modifyVars: config.theme,
+		                            javascriptEnabled: true,
+		                            sourceMap: true
+		                        }
+		                    }
+		                ]
+		            },
+		            {
+		                test: /\.(png|jpg|gif|svg)$/,
+		                use: [
+		                    {
+		                        loader: 'file-loader',
+		                        options: {}
+		                    }
+		                ]
+		            }
+		        ]
+		    }
+		};
 
 
 #### webpack开发环境配置 webpack.start.conf.js：
@@ -193,9 +198,10 @@ Your app is ready to be deployed!
 
 		'use strict';
 		
+		const path = require('path');
 		const webpack = require('webpack');
 		const merge = require('webpack-merge');
-		const colors = require('colors');
+		const chalk = require('chalk');
 		const HtmlWebpackPlugin = require('html-webpack-plugin');
 		const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 		const portfinder = require('portfinder');
@@ -240,9 +246,9 @@ Your app is ready to be deployed!
 		                new FriendlyErrorsPlugin({
 		                    compilationSuccessInfo: {
 		                        messages: [
-		                            `You can now view ${colors.bold(packageConfig.name)} in the browser.`,
-		                            `${colors.bold('Local:')}            http://${address.ip('lo')}:${colors.bold(port)}`,
-		                            `${colors.bold('On Your Network:')}  http://${address.ip()}:${colors.bold(port)}/`
+		                            `You can now view ${chalk.bold(packageConfig.name)} in the browser.`,
+		                            `${chalk.bold('Local:')}            http://${address.ip('lo')}:${chalk.bold(port)}`,
+		                            `${chalk.bold('On Your Network:')}  http://${address.ip()}:${chalk.bold(port)}/`
 		                        ]
 		                    },
 		                    onErrors: config.start.notifyOnErrors ? utils.createNotifierCallback() : undefined
@@ -252,8 +258,7 @@ Your app is ready to be deployed!
 		            resolve(startWebpackConfig);
 		        }
 		    });
-	});
-
+		 });
 
 
 #### webpack开发环境配置 webpack.prod.conf.js：
@@ -261,6 +266,7 @@ Your app is ready to be deployed!
 - 设置生产环境的环境变量
 - 提取并优化压缩css文件 MiniCssExtractPlugin & OptimizeCSSPlugin
 - 分割并压缩JavaScript代码 optimization:splitChunks & optimization:minimizer
+- TerserPlugin ES6代码压缩（UglifyJsPlugin未做ES5兼容的模块会报错）
 - 引用生成后静态资源 HtmlWebpackPlugin
 
 		'use strict';
@@ -269,7 +275,7 @@ Your app is ready to be deployed!
 		const HtmlWebpackPlugin = require('html-webpack-plugin');
 		const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 		const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
-		const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+		const TerserPlugin = require('terser-webpack-plugin');
 		const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 		const baseWebpackConfig = require('./webpack.base.conf');
 		const utils = require('./utils');
@@ -324,43 +330,50 @@ Your app is ready to be deployed!
 		        // keep module.id stable when vendor modules does not change
 		        new webpack.HashedModuleIdsPlugin(),
 		        // enable scope hoisting
-		        new webpack.optimize.ModuleConcatenationPlugin()
+		        new webpack.optimize.ModuleConcatenationPlugin(),
 		        //  represents bundle content as convenient interactive zoomable treemap
 		        // new BundleAnalyzerPlugin()
 		    ],
 		    optimization: {
+		        runtimeChunk: true,
 		        splitChunks: {
 		            chunks: 'all',
 		            minSize: 30000,
-		            maxSize: 0,
 		            minChunks: 1,
 		            maxAsyncRequests: 5,
-		            maxInitialRequests: 3,
+		            maxInitialRequests: 5,
+		            automaticNameDelimiter: '~',
 		            name: true,
 		            cacheGroups: {
+		                'vendors-core': {
+		                    test: /(react|react-dom|react-router-dom|redux|react-redux|react-router-redux|redux-thunk|history|prop-types|axios)/,
+		                    chunks: 'initial',
+		                    name: 'vendors-core',
+		                    priority: 40
+		                },
 		                vendors: {
+		                    test: /[\\/]node_modules[\\/]/,
 		                    chunks: 'all',
 		                    name: 'vendors',
-		                    priority: 0,
-		                    test: /(react|react-dom|react-dom-router|moment|redux|lodash)/
+		                    priority: 0
 		                },
 		                'async-commons': {
 		                    chunks: 'async',
-		                    name: 'async-commons',
 		                    minChunks: 2,
+		                    name: 'async-commons',
 		                    priority: -10
 		                },
 		                commons: {
 		                    chunks: 'all',
-		                    name: 'commons',
 		                    minChunks: 2,
+		                    name: 'commons',
 		                    priority: -20
 		                }
 		            }
 		        },
 		        minimizer: [
-		            new UglifyJsPlugin({
-		                uglifyOptions: {
+		            new TerserPlugin({
+		                terserOptions: {
 		                    compress: {
 		                        warnings: false,
 		                        drop_console: true
@@ -374,6 +387,7 @@ Your app is ready to be deployed!
 		});
 		
 		module.exports = webpackConfig;
+
 
 ### 业务组件的设计
 在满足业务需求的同时，还要让自己的代码简洁、可读性高、易于维护，这样才能写出高质量的软件。 
