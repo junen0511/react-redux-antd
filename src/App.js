@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 import Authorized from 'utils/Authorized';
-import NotFound from './pages/exception/404';
+import NotFound from './pages/Exception/404';
 import store, { history } from './store';
 import { getRouterData } from './common/router';
 
