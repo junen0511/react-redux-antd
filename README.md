@@ -266,7 +266,7 @@ Your app is ready to be deployed!
 - 设置生产环境的环境变量
 - 提取并优化压缩css文件 MiniCssExtractPlugin & OptimizeCSSPlugin
 - 分割并压缩JavaScript代码 optimization:splitChunks & optimization:minimizer
-- TerserPlugin ES6代码压缩（UglifyJsPlugin未做ES5兼容的模块会报错）
+- TerserPlugin ES6代码压缩（UglifyJsPlugin打包未做ES5兼容的模块会报错）
 - 引用生成后静态资源 HtmlWebpackPlugin
 
 		'use strict';
