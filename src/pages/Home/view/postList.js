@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getPostList } from '../actions';
+import { GET_POST_LIST } from '../actionTypes';
 import styles from './postList.less';
 
 class PostList extends PureComponent {
@@ -17,7 +17,12 @@ class PostList extends PureComponent {
     filterPostList = () => {
         const { dispatch } = this.props;
         const { typeId, current, pageSize } = this.state;
-        dispatch(getPostList({ typeId, current, pageSize }));
+        dispatch({
+            type: GET_POST_LIST,
+            payload: {
+                queryForm: { typeId, current, pageSize }
+            }
+        });
     };
 
     render() {

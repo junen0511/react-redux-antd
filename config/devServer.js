@@ -20,10 +20,7 @@ module.exports = assetsPublicPath => ({
     proxy: {
         '/papi': {
             target: 'http://api.annajunen.top',
-            changeOrigin: true,
-            pathRewrite: {
-                "^/papi": ""
-            }
+            changeOrigin: true
         }
     },
     quiet: true, // necessary for FriendlyErrorsPlugin

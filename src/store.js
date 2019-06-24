@@ -1,14 +1,16 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga';
 import { routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import createRootReducer from './reducers';
+import rootSaga from './sagas';
 
 const history = createBrowserHistory();
 
 const historyMiddleware = routerMiddleware(history);
+const sagaMiddleware = createSagaMiddleware();
 
-const middlewares = [thunk, historyMiddleware];
+const middlewares = [sagaMiddleware, historyMiddleware];
 if (process.env.NODE_ENV !== 'production') {
     middlewares.push(require('redux-immutable-state-invariant').default());
 }
@@ -19,6 +21,8 @@ const storeEnhancers = compose(
 );
 
 const store = createStore(createRootReducer(history), {}, storeEnhancers);
+
+sagaMiddleware.run(rootSaga);
 
 export { history };
 export default store;
