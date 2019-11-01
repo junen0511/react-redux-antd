@@ -1,9 +1,9 @@
-import React from 'react';
-import PromiseRender from './PromiseRender';
-import { CURRENT } from './renderAuthorize';
+import React from 'react'
+import PromiseRender from './PromiseRender'
+import { CURRENT } from './renderAuthorize'
 
 function isPromise(obj) {
-    return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
+    return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function'
 }
 
 /**
@@ -15,63 +15,67 @@ function isPromise(obj) {
 const checkPermissions = (authority, currentAuthority, target, Exception) => {
     // no permission
     if (!authority) {
-        return target;
+        return target
     }
 
     // Array
     if (Array.isArray(authority)) {
         if (authority.includes(currentAuthority)) {
-            return target;
+            return target
         }
         if (Array.isArray(currentAuthority)) {
-            currentAuthority.forEach(element => {
+            for (let i = 0; i < currentAuthority.length; i += 1) {
+                const element = currentAuthority[i]
                 if (authority.includes(element)) {
-                    return target;
+                    return target
                 }
-            });
+            }
         }
-        return Exception;
+        return Exception
     }
 
     // String
     if (typeof authority === 'string') {
         if (authority === currentAuthority) {
-            return target;
+            return target
         }
         if (Array.isArray(currentAuthority)) {
-            if (currentAuthority.includes(authority)) {
-                return target;
+            for (let i = 0; i < currentAuthority.length; i += 1) {
+                const element = currentAuthority[i]
+                if (authority.includes(element)) {
+                    return target
+                }
             }
         }
-        return Exception;
+        return Exception
     }
 
     // Promise
     if (isPromise(authority)) {
-        return <PromiseRender ok={target} error={Exception} promise={authority} />;
+        return <PromiseRender ok={target} error={Exception} promise={authority} />
     }
 
     // Function
     if (typeof authority === 'function') {
         try {
-            const bool = authority(currentAuthority);
+            const bool = authority(currentAuthority)
             if (isPromise(bool)) {
-                return <PromiseRender ok={target} error={Exception} promise={bool} />;
+                return <PromiseRender ok={target} error={Exception} promise={bool} />
             }
             if (bool) {
-                return target;
+                return target
             }
-            return Exception;
+            return Exception
         } catch (error) {
-            throw new Error('unsupported parameters');
+            throw new Error('unsupported parameters')
         }
     }
-};
+}
 
-export { checkPermissions };
+export { checkPermissions }
 
 const check = (authority, target, Exception) => {
-    return checkPermissions(authority, CURRENT, target, Exception);
-};
+    return checkPermissions(authority, CURRENT, target, Exception)
+}
 
-export default check;
+export default check

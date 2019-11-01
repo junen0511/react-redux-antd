@@ -7,7 +7,7 @@ const utils = require('./utils');
 const prodMode = process.env.NODE_ENV === 'production';
 
 module.exports = {
-    entry: [config.main],
+    entry: ['@babel/polyfill', config.main],
     output: {
         path: config.prod.assetsRoot,
         filename: '[name].js',
@@ -21,8 +21,7 @@ module.exports = {
             components: utils.resolve('src/components'),
             layouts: utils.resolve('src/layouts'),
             styles: utils.resolve('src/styles'),
-            utils: utils.resolve('src/utils'),
-            '@ant-design/icons/lib/dist$': utils.resolve('src/utils/antdIcon.js')
+            utils: utils.resolve('src/utils')
         }
     },
     plugins: [new WebpackBar()],
@@ -54,11 +53,7 @@ module.exports = {
                     {
                         loader: 'postcss-loader',
                         options: {
-                            plugins: () => [
-                                require('autoprefixer')({
-                                    browsers: ['> 1%', 'last 2 versions']
-                                })
-                            ]
+                            plugins: () => [require('autoprefixer')()]
                         }
                     },
                     {

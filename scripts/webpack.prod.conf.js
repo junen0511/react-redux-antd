@@ -25,7 +25,8 @@ const webpackConfig = merge(baseWebpackConfig, {
         // extract css into its own file
         new MiniCssExtractPlugin({
             filename: utils.assetsPath('css/[name].[contenthash].css'),
-            allChunk: false
+            allChunk: false,
+            ignoreOrder: true
         }),
         // Compress extracted CSS.
         // duplicated CSS from different components can be deduped.
@@ -59,7 +60,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         // keep module.id stable when vendor modules does not change
         new webpack.HashedModuleIdsPlugin(),
         // enable scope hoisting
-        new webpack.optimize.ModuleConcatenationPlugin(),
+        new webpack.optimize.ModuleConcatenationPlugin()
         //  represents bundle content as convenient interactive zoomable treemap
         // new BundleAnalyzerPlugin()
     ],
