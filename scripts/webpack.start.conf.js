@@ -2,7 +2,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const chalk = require('chalk');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
@@ -19,7 +19,7 @@ const startWebpackConfig = merge(baseWebpackConfig, {
     devtool: config.start.devtool,
     plugins: [
         new webpack.DefinePlugin({
-            'process.env': config.env.start
+            'process.env': config.env.start,
         }),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
@@ -27,9 +27,10 @@ const startWebpackConfig = merge(baseWebpackConfig, {
         // https://github.com/ampedandwired/html-webpack-plugin
         new HtmlWebpackPlugin({
             inject: true,
-            template: config.template
-        })
-    ]
+            filename: 'index.html',
+            template: config.template,
+        }),
+    ],
 });
 
 module.exports = new Promise((resolve, reject) => {
@@ -50,10 +51,10 @@ module.exports = new Promise((resolve, reject) => {
                         messages: [
                             `You can now view ${chalk.bold(packageConfig.name)} in the browser.`,
                             `${chalk.bold('Local:')}            http://${address.ip('lo')}:${chalk.bold(port)}`,
-                            `${chalk.bold('On Your Network:')}  http://${address.ip()}:${chalk.bold(port)}/`
-                        ]
+                            `${chalk.bold('On Your Network:')}  http://${address.ip()}:${chalk.bold(port)}/`,
+                        ],
                     },
-                    onErrors: config.start.notifyOnErrors ? utils.createNotifierCallback() : undefined
+                    onErrors: config.start.notifyOnErrors ? utils.createNotifierCallback() : undefined,
                 })
             );
 

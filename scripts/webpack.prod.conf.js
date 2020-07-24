@@ -1,6 +1,6 @@
 'use strict';
 const webpack = require('webpack');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
@@ -16,23 +16,23 @@ const webpackConfig = merge(baseWebpackConfig, {
     output: {
         path: config.prod.assetsRoot,
         filename: utils.assetsPath('js/[name].[chunkhash].js'),
-        chunkFilename: utils.assetsPath('js/[name].[chunkhash].js')
+        chunkFilename: utils.assetsPath('js/[name].[chunkhash].js'),
     },
     plugins: [
         new webpack.DefinePlugin({
-            'process.env': config.env[process.env.ENV_CONFIG]
+            'process.env': config.env[process.env.ENV_CONFIG],
         }),
         // extract css into its own file
         new MiniCssExtractPlugin({
             filename: utils.assetsPath('css/[name].[contenthash].css'),
-            allChunk: false
+            allChunk: false,
         }),
         // Compress extracted CSS.
         // duplicated CSS from different components can be deduped.
         new OptimizeCSSPlugin({
             cssProcessorOptions: config.prod.productionSourceMap
                 ? { safe: true, map: { inline: false } }
-                : { safe: true }
+                : { safe: true },
         }),
         // generate dist index.html with correct asset hash for caching.
         // you can customize output by editing /index.html
@@ -51,10 +51,10 @@ const webpackConfig = merge(baseWebpackConfig, {
                 keepClosingSlash: true,
                 minifyJS: true,
                 minifyCSS: true,
-                minifyURLs: true
+                minifyURLs: true,
             },
             // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-            chunksSortMode: 'dependency'
+            chunksSortMode: 'auto',
         }),
         // keep module.id stable when vendor modules does not change
         new webpack.HashedModuleIdsPlugin(),
@@ -78,41 +78,41 @@ const webpackConfig = merge(baseWebpackConfig, {
                     test: /(react|react-dom|react-router-dom|redux|react-redux|react-router-redux|redux-thunk|history|prop-types|axios)/,
                     chunks: 'initial',
                     name: 'vendors-core',
-                    priority: 40
+                    priority: 40,
                 },
                 vendors: {
                     test: /[\\/]node_modules[\\/]/,
                     chunks: 'all',
                     name: 'vendors',
-                    priority: 0
+                    priority: 0,
                 },
                 'async-commons': {
                     chunks: 'async',
                     minChunks: 2,
                     name: 'async-commons',
-                    priority: -10
+                    priority: -10,
                 },
                 commons: {
                     chunks: 'all',
                     minChunks: 2,
                     name: 'commons',
-                    priority: -20
-                }
-            }
+                    priority: -20,
+                },
+            },
         },
         minimizer: [
             new TerserPlugin({
                 terserOptions: {
                     compress: {
                         warnings: false,
-                        drop_console: true
-                    }
+                        drop_console: true,
+                    },
                 },
                 parallel: true,
-                sourceMap: config.prod.productionSourceMap
-            })
-        ]
-    }
+                sourceMap: config.prod.productionSourceMap,
+            }),
+        ],
+    },
 });
 
 module.exports = webpackConfig;

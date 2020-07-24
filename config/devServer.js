@@ -4,8 +4,8 @@ const path = require('path');
 const HOST = process.env.HOST;
 const PORT = process.env.PORT && Number(process.env.PORT);
 
-module.exports = assetsPublicPath => ({
-    clientLogLevel: 'warning',
+module.exports = (assetsPublicPath) => ({
+    clientLogLevel: 'silent',
     hot: true,
     contentBase: assetsPublicPath, // since we use CopyWebpackPlugin.
     compress: true,
@@ -13,19 +13,18 @@ module.exports = assetsPublicPath => ({
     port: PORT || 3000,
     open: true,
     historyApiFallback: {
-        rewrites: [{ from: /.*/, to: path.posix.join(assetsPublicPath, 'index.html') }]
+        rewrites: [{ from: /.*/, to: path.posix.join(assetsPublicPath, 'index.html') }],
     },
     overlay: { warnings: false, errors: true },
     publicPath: '/',
     proxy: {
-        '/papi': {
+        '/api': {
             target: 'http://api.annajunen.top',
-            changeOrigin: true
-        }
+            changeOrigin: true,
+        },
     },
-    quiet: true, // necessary for FriendlyErrorsPlugin
-    watchContentBase: true,
-    watchOptions: {
-        ignored: /node_modules/
-    }
+    // watchContentBase: true,
+    // watchOptions: {
+    //     ignored: /node_modules/,
+    // },
 });

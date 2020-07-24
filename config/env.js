@@ -4,7 +4,7 @@ module.exports = {
     start: {
         NODE_ENV: '"development"',
         ENV_HOST: '"dev"',
-        BASE_API: '"/papi"'
+        BASE_API: '"/api"'
     },
     test_ta: {
         NODE_ENV: '"production"',

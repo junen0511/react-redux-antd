@@ -22,12 +22,11 @@ exports.createNotifierCallback = () => {
         if (severity !== 'error') return;
 
         const error = errors[0];
-        const filename = error.file && error.file.split('!').pop();
 
         notifier.notify({
             title: packageConfig.name,
             message: severity + ': ' + error.name,
-            subtitle: filename || '',
+            subtitle: error.file || '',
             icon: path.join(__dirname, 'logo.png')
         });
     };

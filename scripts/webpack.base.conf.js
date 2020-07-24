@@ -2,6 +2,7 @@
 
 const WebpackBar = require('webpackbar');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
 const config = require('../config');
 const utils = require('./utils');
 const prodMode = process.env.NODE_ENV === 'production';
@@ -11,7 +12,7 @@ module.exports = {
     output: {
         path: config.prod.assetsRoot,
         filename: '[name].js',
-        publicPath: prodMode ? config.prod.assetsPublicPath : config.start.assetsPublicPath
+        publicPath: prodMode ? config.prod.assetsPublicPath : config.start.assetsPublicPath,
     },
     resolve: {
         extensions: ['.js', '.jsx', '.json'],
@@ -22,17 +23,16 @@ module.exports = {
             layouts: utils.resolve('src/layouts'),
             styles: utils.resolve('src/styles'),
             utils: utils.resolve('src/utils'),
-            '@ant-design/icons/lib/dist$': utils.resolve('src/utils/antdIcon.js')
-        }
+        },
     },
-    plugins: [new WebpackBar()],
+    plugins: [new WebpackBar(), new AntdDayjsWebpackPlugin()],
     module: {
         rules: [
             {
                 test: /\.(js|jsx)$/,
                 exclude: config.nodeModules,
                 loader: 'babel-loader',
-                include: config.src
+                include: config.src,
             },
             // Modular loader components styles
             {
@@ -41,33 +41,31 @@ module.exports = {
                 include: config.src,
                 use: [
                     {
-                        loader: prodMode ? MiniCssExtractPlugin.loader : 'style-loader'
+                        loader: prodMode ? MiniCssExtractPlugin.loader : 'style-loader',
                     },
                     {
                         loader: 'css-loader',
                         options: {
                             sourceMap: true,
                             modules: true,
-                            localIdentName: '[local]___[hash:base64:5]'
-                        }
+                            localsConvention: 'camelCase',
+                        },
                     },
                     {
                         loader: 'postcss-loader',
                         options: {
-                            plugins: () => [
-                                require('autoprefixer')({
-                                    browsers: ['> 1%', 'last 2 versions']
-                                })
-                            ]
-                        }
+                            plugins: () => [require('autoprefixer')()],
+                        },
                     },
                     {
                         loader: 'less-loader',
                         options: {
-                            javascriptEnabled: true
-                        }
-                    }
-                ]
+                            lessOptions: {
+                                javascriptEnabled: true,
+                            },
+                        },
+                    },
+                ],
             },
             // Customize antd themes
             {
@@ -75,30 +73,32 @@ module.exports = {
                 exclude: config.src,
                 use: [
                     {
-                        loader: prodMode ? MiniCssExtractPlugin.loader : 'style-loader'
+                        loader: prodMode ? MiniCssExtractPlugin.loader : 'style-loader',
                     },
                     {
-                        loader: 'css-loader'
+                        loader: 'css-loader',
                     },
                     {
                         loader: 'less-loader',
                         options: {
-                            modifyVars: config.theme,
-                            javascriptEnabled: true,
-                            sourceMap: true
-                        }
-                    }
-                ]
+                            lessOptions: {
+                                modifyVars: config.theme,
+                                javascriptEnabled: true,
+                                sourceMap: true,
+                            },
+                        },
+                    },
+                ],
             },
             {
                 test: /\.(png|jpg|gif|svg)$/,
                 use: [
                     {
                         loader: 'file-loader',
-                        options: {}
-                    }
-                ]
-            }
-        ]
-    }
+                        options: {},
+                    },
+                ],
+            },
+        ],
+    },
 };
