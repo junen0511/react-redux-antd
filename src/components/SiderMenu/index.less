@@ -1,0 +1,58 @@
+@import '../../styles/global.less';
+
+@nav-header-height: @global-header-height;
+
+.logo {
+    position: relative;
+    height: @nav-header-height;
+    padding-left: (@menu-collapsed-width - 32px) / 2;
+    overflow: hidden;
+    line-height: @nav-header-height;
+    background: #002140;
+    transition: all 0.3s;
+    img {
+        display: inline-block;
+        height: @nav-header-height / 2;
+        vertical-align: middle;
+    }
+    span {
+        display: inline-block;
+        margin-left: 8px;
+        color: #000;
+        font-weight: 400;
+        font-size: 14px;
+        vertical-align: middle;
+        letter-spacing: 2px;
+    }
+}
+.sider {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+    &.fixSiderBar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
+    }
+    &.light {
+        background-color: white;
+        box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
+        .logo {
+            background: white;
+            box-shadow: 1px 1px 0 0 @border-color-split;
+            h1 {
+                color: @primary-color;
+            }
+        }
+        :global(.ant-menu-light) {
+            border-right-color: transparent;
+        }
+    }
+}
+
+.icon {
+    width: 14px;
+    vertical-align: baseline;
+}

@@ -75,7 +75,7 @@ const webpackConfig = merge(baseWebpackConfig, {
             name: true,
             cacheGroups: {
                 'vendors-core': {
-                    test: /(react|react-dom|react-router-dom|redux|react-redux|react-router-redux|redux-thunk|history|prop-types|axios)/,
+                    test: /(react|react-dom|react-router-dom|redux|react-redux|react-router-redux|redux-saga|history|prop-types|axios)/,
                     chunks: 'initial',
                     name: 'vendors-core',
                     priority: 40,

@@ -1,1 +1,2 @@
 export const COLLAPSED = 'COLLAPSED';
+export const UPDATE_COLLAPSED = 'COLLAPSED/UPDATE';

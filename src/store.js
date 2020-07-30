@@ -5,7 +5,7 @@ import { createBrowserHistory } from 'history';
 import createRootReducer from './reducers';
 import rootSaga from './sagas';
 
-const history = createBrowserHistory();
+export const history = createBrowserHistory();
 
 const historyMiddleware = routerMiddleware(history);
 const sagaMiddleware = createSagaMiddleware();
@@ -17,12 +17,11 @@ if (process.env.NODE_ENV !== 'production') {
 
 const storeEnhancers = compose(
     applyMiddleware(...middlewares),
-    window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
+    window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : (f) => f
 );
 
 const store = createStore(createRootReducer(history), {}, storeEnhancers);
 
 sagaMiddleware.run(rootSaga);
 
-export { history };
 export default store;

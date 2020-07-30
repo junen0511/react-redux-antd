@@ -1,5 +1,16 @@
 import { parse, stringify } from 'qs';
 
+/**
+ * /path/1024/id => ['/path','/path/1024,'/path/1024/id']
+ * @param  url
+ */
+export function urlToList(url) {
+  const urllist = url.split('/').filter(i => i);
+  return urllist.map((urlItem, index) => {
+      return `/${urllist.slice(0, index + 1).join('/')}`;
+  });
+}
+
 export function getPageQuery() {
     return parse(window.location.href.split('?')[1]);
 }
@@ -24,7 +35,8 @@ export function getRoutes(path, routerData) {
   routes = routes.map(item => item.replace(path, ''));
   const renderRoutes = routes.map(item => ({
       ...routerData[`${path}${item}`],
-      key: `${path}${item}`
+      key: `${path}${item}`,
+      path: `${path}${item}`
   }));
   return renderRoutes;
 }

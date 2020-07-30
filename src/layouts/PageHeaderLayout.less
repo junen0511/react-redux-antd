@@ -1,0 +1,13 @@
+@import '../styles/global.less';
+
+.content {
+    min-height: calc(100vh - 160px);
+    border: none;
+    margin-top: @global-body-margin - 6px;
+    :global {
+        .ant-card-body {
+            padding: @global-main-padding;
+            min-height: @global-content-height;
+        }
+    }
+}
