@@ -29,7 +29,7 @@
     "redux": "^4.0.1",
     "redux-immutable-state-invariant": "^2.1.0",
     "redux-thunk": "^2.3.0",
-    "swiper": "^4.5.0"
+    "swiper": "^6.5.1"
   },
   "scripts": {
     "start": "webpack-dev-server --config scripts/webpack.start.conf.js",
