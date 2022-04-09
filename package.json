@@ -14,7 +14,7 @@
     "history": "^4.7.2",
     "lodash": "^4.17.19",
     "lodash-decorators": "^6.0.1",
-    "moment": "^2.23.0",
+    "moment": "^2.29.2",
     "numeral": "^2.0.6",
     "path-to-regexp": "^2.4.0",
     "prop-types": "^15.7.2",
